@@ -2001,16 +2001,20 @@ input = [
   10930
 ]
 
+prev = 99999999
+current = 1800
 result = 0
 
 input.each_with_index do |num, index|
-  if input[index + 1].class != Integer
+  if input[index + 2].class != Integer
     break
-  elsif input[index + 1] > input[index]
-    result += 1
   else
-    next
+    current = input[index] + input[index + 1] + input[index + 2]
+
+    result += 1 if current > prev
   end
+
+  prev = current
 end
 
 p result
