@@ -1000,5 +1000,3 @@ input = [
   ["down", 9],
   ["forward", 6]
 ]
-
-puts input.length

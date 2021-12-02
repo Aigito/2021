@@ -1003,16 +1003,21 @@ input = [
 
 horizontal = 0
 depth = 0
+depth_increase = 0
+aim = 0
 
 input.each do |command|
   case command.first
   when "up"
-    depth -= command.last
+    aim -= command.last
   when "down"
-    depth += command.last
+    aim += command.last
   else
     horizontal += command.last
+    depth_increase = command.last * aim
+    depth += depth_increase
   end
+
 end
 
-puts horizontal*depth
+puts horizontal * depth
