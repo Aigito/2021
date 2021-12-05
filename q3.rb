@@ -1,3 +1,8 @@
+index1 = 0
+o2arr = []
+
+# Part 1
+
 i = 0
 temp = ""
 arr = []
@@ -27,12 +32,38 @@ end
 
 puts gamma.to_i(2) * epsilon.to_i(2)
 
-# Step 1: Find the most common bit of the first column and store in a variable
 
-# Step 2: With the variable, keep the string that has that number as their first number
+# Part 2
 
-# Step 3: Find the most common bit of the second column and store in a variable
+1000.times do
+  o2.each do |array|
+    o2arr << array[index1]
+  end
 
-# Step 4: With the variable, keep the string that has that number as their second number
+  num = (o2arr.count 0) > (o2arr.count 1) ? 0 : 1
 
-### Continue this cycle until only one string remains
+  o2.select! { |array| array[index1] == num }
+  o2arr = []
+  index1 += 1
+
+  break if o2.length == 1
+end
+
+index2 = 0
+co2arr = []
+
+1000.times do
+  co2.each do |array|
+    co2arr << array[index2]
+  end
+
+  num = (co2arr.count 0) > (co2arr.count 1) ? 1 : 0
+
+  co2.select! { |array| array[index2] == num }
+  co2arr = []
+  index2 += 1
+
+  break if co2.length == 1
+end
+
+p (o2.first.join("")).to_i(2) * (co2.first.join("")).to_i(2)
