@@ -2,7 +2,7 @@ instructions = []
 boards = []
 
 # File reader
-File.open('input.txt', 'r') do |f|
+File.open('q4input.txt', 'r') do |f|
   f.each_line do |line|
     instructions << line
   end
