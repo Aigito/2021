@@ -13,7 +13,7 @@ end
   line.sort_by! &:sum
 end
 
-p @input
+# p @input
 
 # counter for each coordinate point within a hash table
 @hash = {}
@@ -27,6 +27,7 @@ def counter(coordinate)
 end
 
 # generate each point covered by each coordinate pair i.e. (0,1) & (0,3) will generate (0,1), (0,2), (0,3)
+
 def generate_points(coordinate_pair)
   x1 = coordinate_pair.first[0]
   x2 = coordinate_pair.last[0]
@@ -39,16 +40,44 @@ def generate_points(coordinate_pair)
     (y1..y2).each { |point| counter([x1, point]) }
   elsif y1 == y2 # if horizontal line
     (x1..x2).each { |point| counter([point, y1]) }
-  else # if diagonal line, instead of an if statement maybe do a when..case statement?
+  else # if diagonal line,
     # Situation 1: x1 < x2 and y1 < y2, then this is a top left to bottom right line (+1, +1 each time)
-    # Situation 2: x1 < x2 and y1 > y2, then this is a bottom left to top right line (+1, -1 each time)
+    if (x1 < x2) && (y1 < y2)
+      (x1..x2).each do |point|
+        counter([point, y1])
+        y1 += 1
+      end
+      # Situation 2: x1 < x2 and y1 > y2, then this is a bottom left to top right line (+1, -1 each time)
+    elsif (x1 < x2) && (y1 > y2)
+      (x1..x2).each do |point|
+        counter([point, y1])
+        y1 -= 1
+      end
 
-    # Ideally, the earlier sort function will not cause the bottom two situations but there may be outliers
+      # Ideally, the earlier sort function will not cause the bottom two situations but there may be outliers
 
-    # Situation 3: x1 > x2 and y1 < y2, then this is a top right to bottom left line (-1, +1 each time)
-    # Situation 4: x1 > x2 and y1 > y2, then this is a bottom right to top left line (-1, -1 each time)
+      # Situation 3: x1 > x2 and y1 < y2, then this is a top right to bottom left line (-1, +1 each time)
+    elsif (x1 > x2) && (y1 < y2)
+      (y1..y2).each do |point|
+        counter([x1, point])
+        x1 -= 1
+      end
+      # Situation 4: x1 > x2 and y1 > y2, then this is a bottom right to top left line (-1, -1 each time)
+    elsif (x1 > x2) && (y1 > y2)
+      (x2..x1).each do
+        counter([x1, y1])
+        x1 -= 1
+        y1 -= 1
+      end
+    end
   end
 end
+
+@input.each do |line|
+  generate_points(line)
+end
+
+p (@hash.select { |k, v| v > 1} ).size
 
 # # Part 1
 
