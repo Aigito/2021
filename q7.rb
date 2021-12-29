@@ -33,10 +33,12 @@ end
 @right_half = {}
 
 def splitter(crabs, position)
-  # Category 1 (LH): Crab positions that are less than the current position we are checking (i.e. if we are checking position 5, then all pos 0 - 4 crabs are in cat 1
+  # Category 1 (LH): Crab positions that are less than the current position we are checking
+  # (i.e. if we are checking position 5, then all pos 0 - 4 crabs are in cat 1
   @left_half = crabs.select { |k, v| k < position}
 
-  # Category 2 (RH): Crab positions that are greater than or equal to the current position we are checking (i.e. if we are checking position 5, then all pos 5 - max are in cat 2)
+  # Category 2 (RH): Crab positions that are greater than or equal to the current position we are checking
+  # (i.e. if we are checking position 5, then all pos 5 - max are in cat 2)
   @right_half = crabs.reject { |k,v| k < position }
 end
 
@@ -48,27 +50,36 @@ def fuel_required_to_move_to(crabs, position)
   # Call splitter method to get the left and right side respectively
   splitter(crabs, position) # this will return both left and right hash tables
 
-  # Petrol (for each side) = Sum of all keys * value (crab position * number of crabs) - current position * number of crabs
-  @left_sum = 0
-  @left_half.each { |k, v| @left_sum += k * v }
+  # Part 2
+  @left_cost = 0
 
-  @right_sum = 0
-  @right_half.each { |k, v| @right_sum += k * v }
+  @right_cost = 0
 
-  @right_sum - (position * @right_half.values.sum) + (position * @left_half.values.sum) - @left_sum
+  @left_half.each { |k, v| @left_cost += (position - k) * ((position - k) + 1) / 2 * v}
+  @right_half.each { |k, v| @right_cost += (k - position) * ((k - position) + 1) / 2 * v}
+
+  @left_cost + @right_cost
+
+  # # Part 1
+  # Left and right sum represent where they are "currently at"
+  # @left_cost = (position * @left_half.values.sum)
+  # @right_cost = (position * @right_half.values.sum)
+
+  # @left_half.each { |k, v| @left_cost += k * v }
+  # @right_half.each { |k, v| @right_cost += k * v }
+
+  # (@right_sum - @right_cost) + (@left_cost - @left_sum)
 end
+
+fuel_required_to_move_to(all_crabs, 5)
 
 # Step 3: Check and compare the amount of fuel required from pos X to pos X + 1 to see if it is more efficient (less fuel)
 current = previous = least_amount_of_fuel = 999,999,999
 
-
 range.each do |position|
   current = fuel_required_to_move_to(all_crabs, position)
 
-  if current < previous
-    least_amount_of_fuel = current
-  end
-
+  least_amount_of_fuel = current if current < previous
   previous = current
 end
 
