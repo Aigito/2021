@@ -1,11 +1,11 @@
 # File reader
 
-raw_input = []
+line_array = []
 
 File.open('q8input.txt', 'r') do |f|
   f.each_line do |line|
-    line.slice!(-1)
-    raw_input << line
+    line.chomp!
+    line_array << line
   end
 end
 
@@ -13,7 +13,7 @@ def four_digit_generator(string)
   outputs = []
 
   4.times do
-    string[-1] = "" if string[-1] == " "
+    string[-1] = '' if string[-1] == ' '
     outputs.unshift(string.slice!(/\w+\z/))
   end
 
@@ -32,7 +32,7 @@ end
 
 @result = 0
 
-raw_input.each do |string|
+line_array.each do |string|
   arr = four_digit_generator(string)
 
   @result += counter(arr)
