@@ -130,6 +130,8 @@ def output_decoder(output_array)
   @sum += number.to_i
 end
 
+start_time = Time.now
+
 File.open('q8input.txt', 'r') do |f|
   f.each_line do |line|
     line.chomp!
